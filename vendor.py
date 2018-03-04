@@ -37,3 +37,6 @@ assert SHA2(newHash) == lastHash
 lastHash = newHash
 newHash = connUser.recv(1024)
 assert SHA2(newHash) == lastHash
+
+#todo: adauga citire de la tastatura pt user si lista de produse la vendor
+
