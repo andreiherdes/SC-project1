@@ -2,6 +2,11 @@ from utils import *
 import os
 import pickle
 
+
+products = [Product('Chair', 3),
+			Product('Phone', 5),
+			Product('Soda',6)]
+
 s = createSocket(8003)
 (pubkey, privatekey) = generateKeys()
 
@@ -32,10 +37,14 @@ lastHash = chainRoot
 # 	assert SHA2(newHash) == lastHash
 # 	lastHash = newHash
 
-
+print('Sending product list to user.')
+connUser.send(pickle.dumps(products))
 newHash = connUser.recv(1024)
 assert SHA2(newHash) == lastHash
 
 lastHash = newHash
 newHash = connUser.recv(1024)
 assert SHA2(newHash) == lastHash
+
+#todo: adauga citire de la tastatura pt user si lista de produse la vendor
+

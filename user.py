@@ -57,10 +57,14 @@ connVendor = createSocket(8004)
 connVendor.connect(('localhost', 8003))
 
 connVendor.send(pickle.dumps([commitSignature, commit]))
-import time
-time.sleep(2)
 
-connVendor.send(chain[n-2])
+products = pickle.loads(connVendor.recv(1024))
+for elem in products:
+	print(elem)
+lastIndex = n-2
+# while 1:
+# 	choice = 
+# connVendor.send(chain[n-2])
 
-time.sleep(2)
-connVendor.send(chain[n-3])
+# time.sleep(2)
+# connVendor.send(chain[n-3])
