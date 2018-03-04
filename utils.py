@@ -52,6 +52,13 @@ def sendMsg(s, port, msg, host="localhost"):
 	s.connect((host, port))
 	s.send(msg.encode("UTF-8"))
 
+class Product:
+	def __init__(self, name, price):
+		self.name = name
+		self.price = price
+	def __str__(self):
+		return "Name: " + name + ", " + "Price: " + price
+
 
 
 if __name__ == "__main__":

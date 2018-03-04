@@ -14,12 +14,14 @@ commitSignature, commit = pickle.loads(connUser.recv(1024))
 print('Received commit. Checking signature.')
 paywordCertificate = commit[1]
 paywordCertificateSignature = commit[2]
+chainRoot = commit[3]
 userPubKey = commit[6]
 bankPubKey = commit[7]
-chainRoot = commit[3]
 
-assert checkRSA(pickle.dumps(commit), commitSignature, userPubKey)
-assert checkRSA(pickle.dumps(paywordCertificate), paywordCertificateSignature, bankPubKey)
+assert checkRSA(pickle.dumps(commit), commitSignature, userPubKey), "Commit signature has been tampered with"
+assert checkRSA(pickle.dumps(paywordCertificate), paywordCertificateSignature, bankPubKey), "PayWord certificate signature has been tampered with"
+
+print('Signatures confirmed.')
 
 lastHash = chainRoot
 
