@@ -1,6 +1,7 @@
 from utils import *
 import pickle
 import random
+import time
 
 #create socket and generate keys
 sBank = createSocket(8001)
@@ -59,12 +60,24 @@ connVendor.connect(('localhost', 8003))
 connVendor.send(pickle.dumps([commitSignature, commit]))
 
 products = pickle.loads(connVendor.recv(1024))
+
 for elem in products:
 	print(elem)
-lastIndex = n-2
-# while 1:
-# 	choice = 
-# connVendor.send(chain[n-2])
 
-# time.sleep(2)
-# connVendor.send(chain[n-3])
+lastIndex = n-2
+choice = int(input('Choose product: '))
+
+while 1:
+		price = products[choice-1].price
+		sendChain = chain[lastIndex:lastIndex-price:-1]
+		lastIndex = lastIndex - price
+		if lastIndex < 0:
+			connVendor.send(pickle.dumps('done'))
+			print('Out of elements in chain.')
+			break
+		if choice == 0:
+			connVendor.send(pickle.dumps('done'))
+			print('Exiting.')
+			break
+		connVendor.send(pickle.dumps(sendChain))
+		choice = int(input('Choose product: '))

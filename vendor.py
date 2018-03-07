@@ -39,12 +39,26 @@ lastHash = chainRoot
 
 print('Sending product list to user.')
 connUser.send(pickle.dumps(products))
-newHash = connUser.recv(1024)
-assert SHA2(newHash) == lastHash
 
-lastHash = newHash
-newHash = connUser.recv(1024)
-assert SHA2(newHash) == lastHash
+hashNums = 0
+while 1:
+	chainCheck = pickle.loads(connUser.recv(10000))
+	if chainCheck == 'done':
+		break
+	for elem in chainCheck:
+		newHash = elem
+		assert SHA2(newHash) == lastHash
+		lastHash = newHash
+		print('Hash verified')
+		hashNums += 1
 
-#todo: adauga citire de la tastatura pt user si lista de produse la vendor
+print(hashNums)
 
+socBank = createSocket(8004)
+socBank.connect(('localhost', 8005))
+print('Established connection to bank.')
+print('Sending information to bank.')
+
+bankCommit = [hashNums, lastHash, commit]
+
+socBank.send(pickle.dumps(bankCommit))
