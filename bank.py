@@ -4,6 +4,8 @@ import sys
 
 userAcc = 100
 vendorAcc = 100
+print('User acc. balance = {}'.format(userAcc))
+print('Vendor acc. balance = {}'.format(vendorAcc))
 #create socket and generate keys
 s = createSocket(8002)
 (pubkey, privatekey) = generateKeys()

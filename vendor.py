@@ -2,10 +2,9 @@ from utils import *
 import os
 import pickle
 
-
-products = [Product('Chair', 3),
-			Product('Phone', 5),
-			Product('Soda',6)]
+products = [Product('Soda', 3),
+			Product('Croissant', 5),
+			Product('Sandwich',6)]
 
 s = createSocket(8003)
 (pubkey, privatekey) = generateKeys()

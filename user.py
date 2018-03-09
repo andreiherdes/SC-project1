@@ -58,8 +58,10 @@ connVendor = createSocket(8004)
 connVendor.connect(('localhost', 8003))
 
 connVendor.send(pickle.dumps([commitSignature, commit]))
+print('Sent commit.')
 
 products = pickle.loads(connVendor.recv(1024))
+print('Received product list.')
 
 for elem in products:
 	print(elem)
