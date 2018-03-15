@@ -5,19 +5,20 @@ import time
 
 #create socket and generate keys
 sBank = createSocket(8001)
-(pubkey, privatekey) = generateKeys()
+(sign_pubkey, sign_privatekey) = generateKeys()
 
 #send credentials to bank
 id = 'user'
 cardNo = '12345'
 
-credentials = [pubkey, id, cardNo]
+credentials = [sign_pubkey, id, cardNo]
 
 pickleCredentials = pickle.dumps(credentials)
 sBank.connect(('localhost', 8002))
 print('Connection established to bank.')
 
-
+# sBank.send(pickle.dumps(encr_pubkey))
+# bank_pubkey = pickle.loads(sBank.recv(1024))
 sBank.send(pickleCredentials)
 print('Sent credentials to bank.')
 #receive payword certificate and signature from bank
@@ -40,6 +41,7 @@ for i in range(1, n):
 	chain.append(SHA2(chain[i-1]))
 print(len(chain))
 
+chain.extend(chain)
 #creating commit
 print('Creating commit.')
 commit = []
@@ -49,10 +51,10 @@ commit.append(certificateSignature)
 commit.append(chain[n-1])
 commit.append('2018')
 commit.append(n)
-commit.append(pubkey)
+commit.append(sign_pubkey)
 commit.append(bankKey)
 
-commitSignature = signRSA(pickle.dumps(commit), privatekey)
+commitSignature = signRSA(pickle.dumps(commit), sign_privatekey)
 
 connVendor = createSocket(8004)
 connVendor.connect(('localhost', 8003))
@@ -66,7 +68,7 @@ print('Received product list.')
 for elem in products:
 	print(elem)
 
-lastIndex = n-2
+lastIndex = n-2+100
 choice = int(input('Choose product: '))
 
 while 1:

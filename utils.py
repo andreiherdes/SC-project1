@@ -14,6 +14,7 @@ def SHA2(plaintext):
 		hash = SHA256.new(plaintext).digest()
 	return hash
 
+
 def signRSA(data, privatekey):
 	if type(data) is str:
 		hash = SHA256.new(data.encode()).digest()

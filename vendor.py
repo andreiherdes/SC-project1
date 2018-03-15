@@ -1,7 +1,7 @@
 from utils import *
 import os
 import pickle
-
+import sys
 products = [Product('Soda', 3),
 			Product('Croissant', 5),
 			Product('Sandwich',6)]
@@ -39,6 +39,7 @@ lastHash = chainRoot
 print('Sending product list to user.')
 connUser.send(pickle.dumps(products))
 
+hashHistory = [chainRoot]
 hashNums = 0
 while 1:
 	chainCheck = pickle.loads(connUser.recv(10000))
@@ -46,10 +47,17 @@ while 1:
 		break
 	for elem in chainCheck:
 		newHash = elem
+		#check if hash has not been previously used
+		if elem not in hashHistory:
+			hashHistory.append(elem)
+		else:
+			print('One of the sent hashes has been previously sent. Unable to accept commit')
+			sys.exit()
+		#check hash validity
 		assert SHA2(newHash) == lastHash
 		lastHash = newHash
-		print('Hash verified')
 		hashNums += 1
+		print('Hash {} verified'.format(hashNums+1))
 
 print(hashNums)
 
