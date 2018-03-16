@@ -60,7 +60,7 @@ for x in range(numHashes):
 	checkHash = SHA2(checkHash)
 
 
-assert checkHash == chainRoot
+assert checkHash == chainRoot, 'Did not reach chain root. Money not transferred'
 
 print('Commit verified. Transfering money.')
 userAcc -= numHashes

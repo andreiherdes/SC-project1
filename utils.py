@@ -4,7 +4,7 @@ from Crypto.Hash import SHA256
 from base64 import b64encode, b64decode 
 
 import os
-import socket
+import SSLSocket
 
 def SHA2(plaintext):
 	#return hash applied to plaintext
